@@ -1,6 +1,14 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+#import "RNCAssetsLibraryRequestHandler.h"
+#import <React/RCTImageLoader.h>
+#import <React/RCTDataRequestHandler.h>
+#import <React/RCTFileRequestHandler.h>
+#import <React/RCTGIFImageDecoder.h>
+#import <React/RCTHTTPRequestHandler.h>
+#import <React/RCTLocalAssetImageLoader.h>
+#import <React/RCTNetworking.h>
 
 @implementation AppDelegate
 
@@ -31,6 +39,31 @@
 - (BOOL)concurrentRootEnabled
 {
   return true;
+}
+
+- (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass
+{
+  // Set up the default RCTImageLoader and RCTNetworking modules.
+  if (moduleClass == RCTImageLoader.class) {
+    return [[moduleClass alloc] initWithRedirectDelegate:nil
+        loadersProvider:^NSArray<id<RCTImageURLLoader>> *(RCTModuleRegistry *) {
+          return @[ [RCTLocalAssetImageLoader new] ];
+        }
+        decodersProvider:^NSArray<id<RCTImageDataDecoder>> *(RCTModuleRegistry *) {
+          return @[ [RCTGIFImageDecoder new] ];
+        }];
+  } else if (moduleClass == RCTNetworking.class) {
+    return [[moduleClass alloc] initWithHandlersProvider:^NSArray<id<RCTURLRequestHandler>> *(RCTModuleRegistry *) {
+      return @[
+        [RCTHTTPRequestHandler new],
+        [RCTDataRequestHandler new],
+        [RCTFileRequestHandler new],
+        [RNCAssetsLibraryRequestHandler new],
+      ];
+    }];
+  }
+  // No custom initializer here.
+  return [moduleClass new];
 }
 
 @end
