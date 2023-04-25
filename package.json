@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "setup:new": "yarn && yarn cocoapods:new && yarn ios",
+    "setup:old": "yarn && yarn cocoapods:old && yarn ios",
+    "cocoapods:old": "cd ios && bundle install && bundle exec pod install && cd ..",
+    "cocoapods:new": "cd ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install && cd ..",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
@@ -10,6 +14,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-camera-roll/camera-roll": "^5.3.1",
     "react": "18.2.0",
     "react-native": "0.71.7"
   },
