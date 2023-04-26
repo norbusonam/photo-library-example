@@ -6,7 +6,7 @@
     "setup:new": "yarn && yarn cocoapods:new && yarn ios",
     "setup:old": "yarn && yarn cocoapods:old && yarn ios",
     "cocoapods:old": "cd ios && bundle install && bundle exec pod install && cd ..",
-    "cocoapods:new": "cd ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install && cd ..",
+    "cocoapods:new": "cd ios && bundle install &&  USE_FABRIC=1 RCT_NEW_ARCH_ENABLED=1 bundle exec pod install && cd ..",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
